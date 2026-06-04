@@ -13,8 +13,6 @@ int main()
     cout << "和：" << caozuo::sum(xgz) << endl;
 
     cout << "平均值：" << caozuo::average(xgz) << endl;
-
     cout << "最大值：" << caozuo::maxx(xgz) << endl;
-
     return 0;
 }
