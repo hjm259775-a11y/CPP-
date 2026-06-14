@@ -8,3 +8,8 @@ void qingkong()
     memset(jindu, '\0', sizeof(jindu));
 }
 
+void xianshi(void (*zhege)(int))
+{
+
+}
+

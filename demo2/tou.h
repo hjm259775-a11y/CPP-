@@ -9,5 +9,5 @@ const char zifu = '-';
 const char jiantou = '>';
 
 void qingkong();
-void xianshi();
+void xianshi(void (*zhege)(int));
 void moni();
