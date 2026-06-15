@@ -39,6 +39,6 @@ void moni(int per)
     }
     printf("\r[%c][%-101s][%-3d%%]", xgz[per % longg], jindu, per);
     fflush(stdout);
-
+    
 
 }
