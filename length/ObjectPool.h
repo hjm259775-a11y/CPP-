@@ -19,7 +19,7 @@ public:
     {
         for(auto block:_blocks)
         {
-            delete(block);
+            std::free(block);
         }
         _blocks.clear();
     }
@@ -28,13 +28,27 @@ public:
     {
         if(_freelist!=nullptr)
         {
-            
+            void *obj = _freelist;
+            _freelist = *(void **)_freelist;
+            return (T *)obj;
         }
+        if(block_r<sizeof(T))
+        {
+            void *newblock = std::malloc(BLOCK_SIZE);
+            _blocks.push_back(newblock);
+            _current = (char *)newblock;
+            block_r = BLOCK_SIZE;
+        }
+        void *obj = _current;
+        _current += sizeof(T);
+        block_r -= sizeof(T);
+        return (T *)obj;
     }
 
-    void Delete()
+    void Delete(T* obj)
     {
-
+        *(void **)obj = _freelist;
+        _freelist = obj;
     }
 
 private:
