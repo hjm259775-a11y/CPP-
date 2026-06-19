@@ -3,7 +3,7 @@
 #include<thread>
 #include<vector>
 
-const int N = 1000000;
+const int N = 10000000;
 thread_local ObjectPool<double> xgz;
 //加上thread_local: 每个线程拥有自己独立的 ObjectPool 副本
 // 所有线程同时 New/Delete，互不干扰，不需要加锁
