@@ -55,7 +55,7 @@ int main()
     t1.join();
     t2.join();
 
-    std::cout << "完成" << std::endl;
+    std::cout << "完美完成!" << std::endl;
 
     return 0;
 }
