@@ -1,5 +1,6 @@
 ﻿#include"Span.h"
 #include<mutex>
+#include<sys/mman.h>
 
 
 class PageCache
@@ -22,7 +23,7 @@ public:
                     gei->_is = true;
                     //扔给用户的
 
-                    big->start = big->start + k * 8192;
+                    big->start = (void*)((char*)big->start + k * 8192);
                     big->size = i - k;
                     big->_is = false;
                     //返回链表的
@@ -32,7 +33,15 @@ public:
                     return gei;
                 }
             }
-            void* 
+            void *na = mmap(nullptr, 128 * 8192, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+
+            span *fang = new span;
+            fang->start = na;
+            fang->size = 128;
+            fang->_is = false;
+            freelist[128].pushfront(fang);
+
+            return Newspan(k);
         }
         else
         {
@@ -41,9 +50,9 @@ public:
     }
     void DeleteSpan(span *n)
     {
-        
+        n->_is = false;
+        freelist[n->size].pushfront(n);
     }
-    
 
 private:
     SpanList freelist[129];
