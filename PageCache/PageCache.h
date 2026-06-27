@@ -9,7 +9,8 @@ public:
     PageCache(){}
     span *Newspan(size_t k)
     {
-        if(freelist[k].Empty())
+        std::lock_guard<std::mutex> lock(mtx);
+        if (freelist[k].Empty())
         {
             for (int i = k + 1; i < 129; i++)
             {
@@ -41,7 +42,29 @@ public:
             fang->_is = false;
             freelist[128].pushfront(fang);
 
-            return Newspan(k);
+            for (int i = k + 1; i < 129; i++)
+            {
+                if(freelist[i].Empty()==false)
+                {
+                    span *big = freelist[i].popfront();
+
+                    span *gei = new span;
+                    gei->start = big->start;
+                    gei->size = k;
+                    gei->_is = true;
+                    //扔给用户的
+
+                    big->start = (void*)((char*)big->start + k * 8192);
+                    big->size = i - k;
+                    big->_is = false;
+                    //返回链表的
+
+                    freelist[i - k].pushfront(big);
+
+                    return gei;
+                }
+            }
+            
         }
         else
         {
@@ -50,6 +73,7 @@ public:
     }
     void DeleteSpan(span *n)
     {
+        std::lock_guard<std::mutex> lock(mtx);
         n->_is = false;
         freelist[n->size].pushfront(n);
     }
