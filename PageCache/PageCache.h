@@ -58,7 +58,7 @@ public:
                     big->size = i - k;
                     big->_is = false;
                     //返回链表的
-
+                    
                     freelist[i - k].pushfront(big);
 
                     return gei;

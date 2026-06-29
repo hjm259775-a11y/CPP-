@@ -1,4 +1,5 @@
-﻿#include"SizeClass.h"
+﻿#pragma once
+#include<cstddef>
 #include<vector>
 
 struct span
@@ -10,10 +11,10 @@ struct span
 };
 
 
-class PageCache
+class Spanlist
 {
 public:
-    PageCache()
+    Spanlist()
     {
         head.next = &head;
         head.prev = &head;
@@ -40,6 +41,17 @@ public:
         return h;
     }
 
+    bool Emptyspan()
+    {
+        if(head.prev==&head || head.next==&head)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 private:
     span head;
 };
