@@ -3,6 +3,7 @@
 #include<vector>
 #include"ThreadCache.h"
 
+CentralCache centralcache;
 thread_local ThreadCache tc;
 
 void worker(int id)
@@ -45,12 +46,15 @@ void worker(int id)
 
 int main()
 {
-    const int N = 4;
-    std::thread t[N];
-    for (int i = 0; i < N; i++)
-        t[i] = std::thread(worker, i);
-    for (int i = 0; i < N; i++)
-        t[i].join();
+    const int NUM_THREADS = 4;
+    std::thread threads[NUM_THREADS];
+
+    for (int i = 0; i < NUM_THREADS; i++)
+        threads[i] = std::thread(worker, i);
+
+    for (int i = 0; i < NUM_THREADS; i++)
+        threads[i].join();
+
     std::cout << "\n所有线程测试通过!\n";
     return 0;
 }
