@@ -43,7 +43,8 @@ public:
         
         void *head = _freelist[shiji];
         void *end = head;
-        for (int i = 0; i < n && end != nullptr; i++)
+        int i = 0;
+        for (; i < n && end != nullptr; i++)
         {
             end = *(void **)end;
         }
@@ -59,11 +60,28 @@ public:
             size_t sum = pages * 8192;
             size_t central_n = sum / obj;
 
+            for (int i = 0; i < central_n-1;i++)
+            {
+                *(void **)str = str + obj;
+                str += obj;
+            }
+            *(void **)str = nullptr;
 
+            void *ntr = head;
+            while (*(void **)ntr != nullptr)
+            {
+                ntr = *(void **)ntr;
+            }
+            *(void **)ntr = page->start;
 
+            void *hhh = head;
+            for (int k = 0; k < n - 1; k++)
+            {
+                hhh = *(void **)hhh;
+            }
+            _freelist[shiji] = *(void**)hhh;
+            *(void **)hhh = nullptr;
 
-
-            _freelist[shiji] = nullptr;
             return head;
             
         }
