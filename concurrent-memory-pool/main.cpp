@@ -7,6 +7,6 @@ CentralCache centralcache;
 
 int main()
 {
-    
+    CentralCache a;
     return 0;
 }
